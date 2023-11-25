@@ -10,7 +10,7 @@ async function main() {
   });
   console.log('Connected to MongoDB');
   app.listen(config.port, () => {
-    console.log(`Server running at port ${config.port}`);
+    console.log(` E-commerce Server running at port ${config.port}`);
   });
 }
 main();
