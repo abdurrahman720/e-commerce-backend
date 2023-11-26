@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model,mongoose } from 'mongoose';
 
-const UserSchema = new Schema(
+const userSchema = new Schema(
   {
     fullName: {
       type: String,
@@ -8,24 +8,59 @@ const UserSchema = new Schema(
     },
     email: {
       type: String,
-      unique: true,
+      unique: [true, 'Email already registered'],
       required: true,
     },
     hashedPassword: {
       type: String,
       required: true,
+      select:0
     },
     image: {
       type: String,
     },
     role: {
       type: String,
+      enum: {
+        values: ['admin', 'user']
+      },
       default: 'user',
     },
+
+    reviews: [{
+      type: mongoose.Types.ObjectId,
+      ref:'Review'
+    }],
+    
+    orders: [{
+      type: mongoose.Types.ObjectId,
+      ref:'Order'
+    }],
 
     country: {
       type: String,
     },
+    
+    state: {
+      type: String,
+    },
+    town: {
+      type: String,
+    },
+
+    roadNo: {
+      type: Number,
+    },
+
+    houesNo: {
+      type: Number,
+    },
+
+    zipCode: {
+      type: Number
+    }
+
+
   },
   {
     timestamps: true,
@@ -35,13 +70,10 @@ const UserSchema = new Schema(
   },
 );
 
-UserSchema.statics.isUserExist = async function (email) {
-  const user = await User.findOne(
-    { email },
-    { email: 1},
-  ).lean();
 
-  return user;
-};
+userSchema.virtual('address').get(function () {
+  return `House No:${this.houesNo} , Road No:${this.roadNo}, Town: ${this.town}, State: ${this.state}, Country: ${this.country}`
+})
 
-export const User = model('User', UserSchema);
+
+export const User = model('User', userSchema);
