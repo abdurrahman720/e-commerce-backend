@@ -1,7 +1,7 @@
 import { Schema, model , mongoose} from "mongoose"; 
 
 
-const reviewSchema = new Schema({
+const orderSchema = new Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -10,20 +10,13 @@ const reviewSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product"
     },
-    rating: {
-        type: Number,
-        required: true
-    },
-    comment: {
-        type: String,
-        required: true
-    },
+   
     createdAt: { type: Date, default: Date.now },
 });
 
 
 
 
-export const Review = model('Review', reviewSchema);
+export const Order = model('Order', orderSchema);
 
 
