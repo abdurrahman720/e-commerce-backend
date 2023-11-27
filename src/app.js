@@ -6,6 +6,7 @@ import httpStatus from 'http-status';
 
 import globalErrorHandler from './app/middlewares/globalErrorHandler.js';
 import router from './app/routes/routes.js';
+import config from './config/config.js';
 
 const app = express();
 app.use(
@@ -43,6 +44,10 @@ app.use((req, res, next) => {
     ],
   });
   next();
+});
+
+app.listen(config.port, () => {
+  console.log(`Server running at port ${config.port}`);
 });
 
 export default app;

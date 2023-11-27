@@ -1,22 +1,22 @@
-import { Schema, model , mongoose} from "mongoose"; 
+// import { Schema, model , mongoose} from "mongoose"; 
 
 
-const orderSchema = new Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
-    productId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product"
-    },
-   
-    createdAt: { type: Date, default: Date.now },
-});
+// const orderSchema = new Schema({
+//     userId: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "User"
+//     },
+//     productId: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "Product"
+//     },
+
+//     createdAt: { type: Date, default: Date.now },
+// });
 
 
 
 
-export const Order = model('Order', orderSchema);
+// export const Order = model('Order', orderSchema);
 
 
