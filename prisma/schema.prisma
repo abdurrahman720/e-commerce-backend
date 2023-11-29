@@ -17,14 +17,15 @@ model User {
   country        String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  role           Role      @default(USER)
+  role           Role      @default(BUYER)
   reviews        Review[]
   Order          Order[]
   address        Address?
 }
 
 enum Role {
-  USER
+  BUYER
+  SELLER
   ADMIN
 }
 
@@ -32,38 +33,42 @@ model Category {
   id            String        @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   description   String?
-  subcategories Subcategory[]
+  subcategories String[]
   products       Product[]
 }
 
-model Subcategory {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String?
 
-  Category   Category? @relation(fields: [categoryId], references: [id])
-  categoryId String?   @db.ObjectId
-  products    Product[]
-}
+
+// model Subcategory {
+//   id          String  @id @default(auto()) @map("_id") @db.ObjectId
+//   name        String
+//   description String?
+
+//   Category   Category? @relation(fields: [categoryId], references: [id])
+//   categoryId String?   @db.ObjectId
+//   products    Product[]
+// }
 
 model Product {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
   categoryId    String      @db.ObjectId
-  subcategoryId String      @db.ObjectId
   name          String
   description   String
   howItWorks String?
   careGuide String?
   deliveryReturns String?
   price         Float
-  address       String
+  location String?       
   inStock       Boolean @default(false)
   quantity Int
   unit Unit
-  images        Image[]
+  images        String[]
+  thumbnail     String?
   reviews       Review[]
   category      Category    @relation(fields: [categoryId], references: [id])
-  subcategory   Subcategory @relation(fields: [subcategoryId], references: [id])
+  subcategory   String?
+  createdAt      DateTime?  @default(now())
+  updatedAt      DateTime? @updatedAt
 }
 
 enum Unit {
@@ -107,16 +112,12 @@ type CartProductType {
   description String
   category    String
   brand       String
-  selectedImg Image
+
   quantity    Int
   price       Float
 }
 
-type Image {
-  color     String
-  colorCode String
-  image     String
-}
+
 
 type Address {
   city       String?
