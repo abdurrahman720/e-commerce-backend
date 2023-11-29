@@ -97,6 +97,181 @@ const editCategory = async (cId, categoryDoc) => {
     }
 }
 
+const addFooter = async (footerDoc) => {
+  try { 
+    const { name, footerItems } = footerDoc;
+
+    const footer = await prisma.footer.create({
+      data: {
+        name: name,
+        footerItems: footerItems
+      }
+    })
+      
+    return {
+      code: httpStatus.OK,
+      message: "Footer created successfully",
+      data: footer
+  }
+  }
+
+  catch (err) {
+    console.log(err)
+
+
+    if (err instanceof ApiError) {
+      // If it's an instance of ApiError, send the error response
+      return {
+        code: err.statusCode,
+        message: err.message,
+        data: null,
+      };
+    } else {
+      // For other unexpected errors, log the error and send a generic error response
+      console.error("Unexpected error:", err);
+      return {
+        code: httpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Internal Server Error',
+        data: null,
+      };
+    }
+}
+  
+  
+}
+
+
+const editFooter = async (fId, footerDoc) => {
+  try {
+
+      const { name, footerItems } = footerDoc;
+      
+
+      const footer = await prisma.footer.update({
+          where: {
+              id: fId
+          },
+          data: {
+              name: name,
+              footerItems: footerItems
+          }
+      });
+      
+      
+
+
+      return {
+          code: httpStatus.OK,
+          message: "Footer udpated successfully",
+          data: footer
+      }
+
+   }
+  catch (err) {
+      console.log(err)
+
+
+      if (err instanceof ApiError) {
+        // If it's an instance of ApiError, send the error response
+        return {
+          code: err.statusCode,
+          message: err.message,
+          data: null,
+        };
+      } else {
+        // For other unexpected errors, log the error and send a generic error response
+        console.error("Unexpected error:", err);
+        return {
+          code: httpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Internal Server Error',
+          data: null,
+        };
+      }
+  }
+}
+
+const getCategories = async () => {
+
+  try { 
+
+    const categories = await prisma.category.findMany({
+      orderBy: {
+        createdAt: 'asc'
+      }
+    })
+
+    return {
+      code: httpStatus.OK,
+      message: "Categories fetched successfully",
+      data: categories
+  }
+
+  }
+  catch (err) {
+    console.log(err)
+
+
+    if (err instanceof ApiError) {
+      // If it's an instance of ApiError, send the error response
+      return {
+        code: err.statusCode,
+        message: err.message,
+        data: null,
+      };
+    } else {
+      // For other unexpected errors, log the error and send a generic error response
+      console.error("Unexpected error:", err);
+      return {
+        code: httpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Internal Server Error',
+        data: null,
+      };
+    }
+}
+  
+}
+const getFooter = async () => {
+
+  try { 
+
+    const footer = await prisma.footer.findMany({
+      orderBy: {
+        createdAt: 'asc'
+      }
+    })
+
+    return {
+      code: httpStatus.OK,
+      message: "Footer fetched successfully",
+      data: footer
+  }
+
+  }
+  catch (err) {
+    console.log(err)
+
+
+    if (err instanceof ApiError) {
+      // If it's an instance of ApiError, send the error response
+      return {
+        code: err.statusCode,
+        message: err.message,
+        data: null,
+      };
+    } else {
+      // For other unexpected errors, log the error and send a generic error response
+      console.error("Unexpected error:", err);
+      return {
+        code: httpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Internal Server Error',
+        data: null,
+      };
+    }
+}
+  
+}
+
+
 export const AdminService = {
- addCategory,editCategory
+ addCategory,editCategory,addFooter,editFooter,getCategories,getFooter
 }

@@ -129,7 +129,11 @@ const getProducts = async (req) => {
             user: true
           }
         }
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
+
     })
 
     return {

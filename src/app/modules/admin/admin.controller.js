@@ -15,6 +15,8 @@ const addCategory = catchAsync(async (req, res) => {
 })
 
 
+
+
 const editCategory = catchAsync(async (req, res) => {
     const id = req.params.id;
     const categoryDoc = req.body;
@@ -29,7 +31,56 @@ const editCategory = catchAsync(async (req, res) => {
 
 })
 
+const addFooter = catchAsync(async (req, res) => {
+    const result = await AdminService.addFooter(req.body);
+
+    sendResponse(res, {
+        statusCode: result?.code,
+        success: result?.success,
+        message: result?.message,
+       data: result?.data
+    })
+
+})
+
+const editFooter = catchAsync(async (req, res) => {
+    const fid = req.params.id;
+    const footerDoc = req.body;
+    const result = await AdminService.editFooter(fid, footerDoc);
+
+    sendResponse(res, {
+        statusCode: result?.code,
+        success: result?.success,
+        message: result?.message,
+       data: result?.data
+    })
+
+})
+
+const getCategories = catchAsync(async (req, res) => {
+
+    const result = await AdminService.getCategories();
+    sendResponse(res, {
+        statusCode: result?.code,
+        success: result?.success,
+        message: result?.message,
+       data: result?.data
+    })
+
+})
+const getFooter = catchAsync(async (req, res) => {
+
+    const result = await AdminService.getFooter();
+    sendResponse(res, {
+        statusCode: result?.code,
+        success: result?.success,
+        message: result?.message,
+       data: result?.data
+    })
+
+})
+
 
 export const AdminController = {
-    addCategory,editCategory
+    addCategory,editCategory,addFooter,editFooter,getCategories,getFooter
 }
