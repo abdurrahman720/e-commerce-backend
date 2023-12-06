@@ -5,12 +5,13 @@ import prisma from "../../../../prisma/index.js";
 const addProduct = async productDoc => {
     try {
 
-        const {name, categoryId, description, howItWorks,careGuide,deliveryReturns,price,address ,inStock, quantity,unit, subcategory, images, thumbnail } = productDoc;
+      const { name, categoryId, description, faq, price, address, inStock, quantity, unit, subcategory, images, thumbnail, location } = productDoc;
+
 
 
         const newProduct = await prisma.product.create({
             data: {
-                name, categoryId,  description, howItWorks,careGuide,deliveryReturns,price:parseFloat(price),address ,inStock, quantity,unit,subcategory,images,thumbnail
+                name, categoryId,  description,  faq  ,price:parseFloat(price),address ,inStock, quantity:parseInt(quantity),unit,subcategory,images,thumbnail,location
             }
         })
 
@@ -45,14 +46,14 @@ const addProduct = async productDoc => {
 
 const updateProduct = async (pId,productDoc) => {
     try {
-        const { name, categoryId, subcategoryId, description, howItWorks, careGuide, deliveryReturns, price, address, inStock, quantity, unit, location } = productDoc;
+        const { name, categoryId, subcategoryId, description, faq  , price, address, inStock, quantity, unit, location } = productDoc;
 
         const updatedProduct = await prisma.product.update({
             where: {
                 id: pId
             },
             data: {
-                name, categoryId, subcategoryId, description, howItWorks,careGuide,deliveryReturns,price,address ,inStock, quantity,unit, location
+                name, categoryId, subcategoryId, description,  faq  ,price,address ,inStock, quantity,unit, location
             }
         })
 
@@ -104,7 +105,14 @@ const getProducts = async (req) => {
          { description: {
             contains: req.query.searchString,
             mode: 'insensitive'
-          }}]
+            }
+            },
+         { location: {
+            contains: req.query.searchString,
+            mode: 'insensitive'
+            }
+            }
+          ]
         
         }
       }
@@ -128,7 +136,8 @@ const getProducts = async (req) => {
           include: {
             user: true
           }
-        }
+        },
+        category: true
       },
       orderBy: {
         createdAt: 'desc'

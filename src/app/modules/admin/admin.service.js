@@ -7,7 +7,7 @@ const addCategory = async categoryDoc => {
 
         const { name, subcategories } = categoryDoc;
         
-        console.log("Subcategories:", subcategories);
+ 
         const category = await prisma.category.create({
             data: {
                 name: name,

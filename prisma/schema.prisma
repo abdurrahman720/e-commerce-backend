@@ -21,6 +21,7 @@ model User {
   reviews        Review[]
   Order          Order[]
   address        Address?
+  contact String?
 }
 
 enum Role {
@@ -52,20 +53,18 @@ model Category {
 model Product {
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
   categoryId      String    @db.ObjectId
-  name            String
+  name             String
   description     String
-  howItWorks      String?
-  careGuide       String?
-  deliveryReturns String?
+  faq             FaqItems[]
   price           Float
   location        String?
-  inStock         Boolean   @default(false)
+  inStock         Boolean   @default(true)
   quantity        Int
   unit            Unit
   images          String[]
   thumbnail       String?
   reviews         Review[]
-  category        Category  @relation(fields: [categoryId], references: [id])
+  category        Category?  @relation(fields: [categoryId], references: [id])
   subcategory     String?
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
@@ -75,6 +74,11 @@ enum Unit {
   KG
   POUND
   LITRE
+}
+
+type FaqItems{
+  ques String
+  ans  String
 }
 
 model Order {
@@ -117,7 +121,7 @@ model Footer {
 
 type FooterItems {
   name String?
-  link String?
+  path String?
 }
 
 type CartProductType {

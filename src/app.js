@@ -1,5 +1,5 @@
 import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
+
 import cors from 'cors';
 import express from 'express';
 import httpStatus from 'http-status';
@@ -17,9 +17,10 @@ app.use(
 app.use(cookieParser());
 
 // parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// app.use(bodyParser.json({limit:'50mb'}));
 
 // all routes
 app.use('/api/v1', router);
