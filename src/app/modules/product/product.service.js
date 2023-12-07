@@ -129,21 +129,27 @@ const getProducts = async (req) => {
     }
 
 
+    const PAGE_SIZE = 10; // Adjust the page size as needed
+    const page = req.query.page || 1;
+    const offset = (page - 1) * PAGE_SIZE;
+    
     const products = await prisma.product.findMany({
       where: whereCondition,
       include: {
         reviews: {
           include: {
-            user: true
-          }
+            user: true,
+          },
         },
-        category: true
+        category: true,
       },
       orderBy: {
-        createdAt: 'desc'
-      }
-
-    })
+        createdAt: 'desc',
+      },
+      skip: offset,
+      take: PAGE_SIZE,
+    });
+    
 
     return {
       code: httpStatus.OK,
@@ -178,6 +184,8 @@ const getProducts = async (req) => {
 }
 
 const getProductbyId = async (pId) => {
+
+  console.log("id:",pId)
 
   const product = await prisma.product.findUnique({
     where: {
