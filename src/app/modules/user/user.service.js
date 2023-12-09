@@ -5,6 +5,7 @@ import httpStatus from "http-status";
 import prisma from "../../../../prisma/index.js";
 import axios from "axios";
 import { jwtHelpers } from "../../../helpers/jwtHelper.js";
+import { sendEmail } from "../../../helpers/sendEmail.js";
 
 const createUser = async userDoc => {
 
@@ -227,6 +228,64 @@ return {
 }
 }
 
+const sendPassResetToken = async (userEmail) => {
+  try {
+
+    console.log(userEmail)
+
+    const user = await prisma.user.findUnique({
+      where: {
+      email: userEmail
+      },
+      select: {
+        id:true
+      }
+     
+    })
+    
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
+    }
+
+
+    if (user) {
+    
+      const res = await sendEmail({email: userEmail, userId: user.id})
+ 
+
+      return {
+        code: httpStatus.OK,
+        message: 'Password rese mail sent successfully!',
+        data: res
+        }
+  }
+
+
+  }
+  catch (err) {
+    console.log(err)
+
+
+if (err instanceof ApiError) {
+// If it's an instance of ApiError, send the error response
+return {
+  code: err.statusCode,
+  message: err.message,
+  data: null,
+};
+} else {
+// For other unexpected errors, log the error and send a generic error response
+console.error("Unexpected error:", err);
+return {
+  code: httpStatus.INTERNAL_SERVER_ERROR,
+  message: 'Internal Server Error',
+  data: null,
+};
+}
+
+}
+}
+
 export const UserService = {
-    createUser,loginUser,getUserByToken
+    createUser,loginUser,getUserByToken,sendPassResetToken
 }

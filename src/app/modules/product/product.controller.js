@@ -60,10 +60,24 @@ const getProductbyId = catchAsync(async (req, res) => {
     })
 
 })
+const deleteProduct = catchAsync(async (req, res) => {
+
+    const { id } = req.params;
+
+    const result = await ProductService.deleteProduct(id);
+
+    sendResponse(res, {
+        statusCode: result?.code,
+        success: result?.success,
+        message: result?.message,
+       data: result?.data
+    })
+
+})
 
 
 
 
 export const ProductController = {
-    addProduct,updateProduct,getProducts,getProductbyId
+    addProduct,updateProduct,getProducts,getProductbyId,deleteProduct
 }

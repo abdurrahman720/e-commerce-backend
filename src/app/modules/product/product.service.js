@@ -185,24 +185,88 @@ const getProducts = async (req) => {
 
 const getProductbyId = async (pId) => {
 
-  console.log("id:",pId)
-
-  const product = await prisma.product.findUnique({
-    where: {
-      id: pId
+  try {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: pId
+      }
+    })
+  
+    return {
+      code: httpStatus.OK,
+      message: "Product fetched",
+      data: product
     }
-  })
-
-  return {
-    code: httpStatus.OK,
-    message: "Product fetched",
-    data: product
   }
+  
+
+  catch (err) {
+    console.log(err)
+
+
+    if (err instanceof ApiError) {
+      // If it's an instance of ApiError, send the error response
+      return {
+        code: err.statusCode,
+        message: err.message,
+        data: null,
+      };
+    } else {
+      // For other unexpected errors, log the error and send a generic error response
+      console.error("Unexpected error:", err);
+      return {
+        code: httpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Internal Server Error',
+        data: null,
+      };
+    }
+}
+}
+
+
+const deleteProduct = async (pId) => {
+
+  try {
+    const deletedProduct = await prisma.product.delete({
+      where: {
+        id: pId
+      }
+    })
+
+    return {
+      code: httpStatus.OK,
+      message: "Product deleted",
+      data: deletedProduct
+    }
+}
+ 
+
+  catch (err) {
+    console.log(err)
+
+
+    if (err instanceof ApiError) {
+      // If it's an instance of ApiError, send the error response
+      return {
+        code: err.statusCode,
+        message: err.message,
+        data: null,
+      };
+    } else {
+      // For other unexpected errors, log the error and send a generic error response
+      console.error("Unexpected error:", err);
+      return {
+        code: httpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Internal Server Error',
+        data: null,
+      };
+    }
+}
+
 }
 
 
 
-
 export const ProductService = {
-    addProduct, updateProduct,getProducts,getProductbyId
+    addProduct, updateProduct,getProducts,getProductbyId,deleteProduct
 }

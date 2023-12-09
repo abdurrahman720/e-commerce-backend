@@ -34,10 +34,23 @@ const getUserByToken = catchAsync(async (req, res) => {
        data: result?.data
     })
 })
+const sendPassResetToken = catchAsync(async (req, res) => {
+
+    const { email } = req.body;
+
+    const result = await UserService.sendPassResetToken(email);
+
+    sendResponse(res, {
+        statusCode: result?.code,
+        success: result?.success,
+        message: result?.message,
+       data: result?.data
+    })
+})
 
 
 
 
 export const UserController = {
-    createUser,loginUser,getUserByToken
+    createUser,loginUser,getUserByToken,sendPassResetToken
 }
