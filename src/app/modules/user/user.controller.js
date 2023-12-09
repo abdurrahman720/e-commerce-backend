@@ -47,10 +47,23 @@ const sendPassResetToken = catchAsync(async (req, res) => {
        data: result?.data
     })
 })
+const passwordReset = catchAsync(async (req, res) => {
+
+    const { newPass, token } = req.body;
+
+    const result = await UserService.passwordReset(newPass, token);
+
+    sendResponse(res, {
+        statusCode: result?.code,
+        success: result?.success,
+        message: result?.message,
+       data: result?.data
+    })
+})
 
 
 
 
 export const UserController = {
-    createUser,loginUser,getUserByToken,sendPassResetToken
+    createUser,loginUser,getUserByToken,sendPassResetToken,passwordReset
 }

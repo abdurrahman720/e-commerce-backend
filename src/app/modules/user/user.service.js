@@ -24,10 +24,10 @@ const createUser = async userDoc => {
         const response = await axios.get('http://ip-api.com/json');
         const country = response.data.country;
 
-        console.log("country", country);
+
 
         const hashedPassword = await bcrypt.hash(userDoc.password, 12);
-        console.log("hashedPassword",hashedPassword)
+     
     
         const newUser = await prisma.user.create({
             data: {
@@ -231,7 +231,7 @@ return {
 const sendPassResetToken = async (userEmail) => {
   try {
 
-    console.log(userEmail)
+
 
     const user = await prisma.user.findUnique({
       where: {
@@ -255,7 +255,7 @@ const sendPassResetToken = async (userEmail) => {
 
       return {
         code: httpStatus.OK,
-        message: 'Password rese mail sent successfully!',
+        message: 'Password reset mail sent successfully!',
         data: res
         }
   }
@@ -286,6 +286,52 @@ return {
 }
 }
 
+const passwordReset = async (newPass, token) => {
+
+  if (!newPass) {
+    throw new ApiError(httpStatus.NO_CONTENT,"New password is required")
+  }
+
+  const hashedPassword = await bcrypt.hash(newPass, config.bcrypt_salt_rounds);
+
+  const user = await prisma.user.findFirst({
+    where: {
+      passwordResetToken: token,
+      passwordResetTokenExpiry: {
+        gt: new Date()
+      }
+    }
+  })
+
+  if (!user) {
+    throw new ApiError(httpStatus.UNAUTHORIZED,"Invalid Token")
+  }
+
+  try {
+    const res = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        hashedPassword: hashedPassword,
+        passwordResetToken: null,
+        passwordResetTokenExpiry: null
+      }
+    })
+
+    return {
+      code: httpStatus.OK,
+      message: 'Password reseted successfully!',
+      data: res
+      }
+  }
+  catch (err) {
+    console.log(err)
+  }
+
+
+}
+
 export const UserService = {
-    createUser,loginUser,getUserByToken,sendPassResetToken
+    createUser,loginUser,getUserByToken,sendPassResetToken,passwordReset
 }
