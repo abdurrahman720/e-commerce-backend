@@ -231,6 +231,7 @@ return {
 const sendPassResetToken = async (userEmail) => {
   try {
 
+    console.log(userEmail);
 
 
     const user = await prisma.user.findUnique({
@@ -292,7 +293,7 @@ const passwordReset = async (newPass, token) => {
     throw new ApiError(httpStatus.NO_CONTENT,"New password is required")
   }
 
-  const hashedPassword = await bcrypt.hash(newPass, config.bcrypt_salt_rounds);
+  const hashedPassword = await bcrypt.hash(newPass, 12);
 
   const user = await prisma.user.findFirst({
     where: {

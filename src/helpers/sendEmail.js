@@ -29,7 +29,7 @@ export const sendEmail = async({ email, userId }) => {
                 }
             });
 
-            console.log(email)
+          
             
             const mailOptions = {
                 from: "beorganic.ws",

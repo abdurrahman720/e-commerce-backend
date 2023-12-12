@@ -35,8 +35,8 @@ const getUserByToken = catchAsync(async (req, res) => {
     })
 })
 const sendPassResetToken = catchAsync(async (req, res) => {
-
-    const { email } = req.body;
+    const { email } = req.query;
+    console.log(email)
 
     const result = await UserService.sendPassResetToken(email);
 
@@ -48,6 +48,7 @@ const sendPassResetToken = catchAsync(async (req, res) => {
     })
 })
 const passwordReset = catchAsync(async (req, res) => {
+    console.log(req.body)
 
     const { newPass, token } = req.body;
 
