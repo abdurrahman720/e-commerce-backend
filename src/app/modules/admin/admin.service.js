@@ -273,19 +273,24 @@ const getFooter = async () => {
 
 
 const deleteCategory = async (cId) => {
+  console.log("cid:", cId)
 
   try {
-    const deletedCategory = await prisma.product.delete({
+  
+    
+    const deletedCategory = await prisma.category.delete({
       where: {
-        id: cId
-      }
-    })
+        id: cId,
+      },
+    });
+
+   
 
     return {
       code: httpStatus.OK,
       message: "Category deleted",
-      data: deletedCategory
-    }
+      data: deletedCategory,
+    };
 }
  
 
@@ -309,13 +314,14 @@ const deleteCategory = async (cId) => {
         data: null,
       };
     }
+  }
+  
 }
 
-}
 const deleteFooter = async (fId) => {
 
   try {
-    const deletedFooter = await prisma.product.delete({
+    const deletedFooter = await prisma.footer.delete({
       where: {
         id: fId
       }
