@@ -1,5 +1,5 @@
 import ApiError from "../../../errors/ApiError.js";
-import config from "../../../config/config.js";
+
 import bcrypt from 'bcrypt'
 import httpStatus from "http-status";
 import prisma from "../../../../prisma/index.js";

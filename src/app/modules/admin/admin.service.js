@@ -272,6 +272,90 @@ const getFooter = async () => {
 }
 
 
+const deleteCategory = async (cId) => {
+
+  try {
+    const deletedCategory = await prisma.product.delete({
+      where: {
+        id: cId
+      }
+    })
+
+    return {
+      code: httpStatus.OK,
+      message: "Category deleted",
+      data: deletedCategory
+    }
+}
+ 
+
+  catch (err) {
+    console.log(err)
+
+
+    if (err instanceof ApiError) {
+      // If it's an instance of ApiError, send the error response
+      return {
+        code: err.statusCode,
+        message: err.message,
+        data: null,
+      };
+    } else {
+      // For other unexpected errors, log the error and send a generic error response
+      console.error("Unexpected error:", err);
+      return {
+        code: httpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Internal Server Error',
+        data: null,
+      };
+    }
+}
+
+}
+const deleteFooter = async (fId) => {
+
+  try {
+    const deletedFooter = await prisma.product.delete({
+      where: {
+        id: fId
+      }
+    })
+
+    return {
+      code: httpStatus.OK,
+      message: "Category deleted",
+      data: deletedFooter
+    }
+}
+ 
+
+  catch (err) {
+    console.log(err)
+
+
+    if (err instanceof ApiError) {
+      // If it's an instance of ApiError, send the error response
+      return {
+        code: err.statusCode,
+        message: err.message,
+        data: null,
+      };
+    } else {
+      // For other unexpected errors, log the error and send a generic error response
+      console.error("Unexpected error:", err);
+      return {
+        code: httpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Internal Server Error',
+        data: null,
+      };
+    }
+}
+
+}
+
+
+
+
 export const AdminService = {
- addCategory,editCategory,addFooter,editFooter,getCategories,getFooter
+ addCategory,editCategory,addFooter,editFooter,getCategories,getFooter,deleteCategory,deleteFooter
 }

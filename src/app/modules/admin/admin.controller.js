@@ -80,7 +80,36 @@ const getFooter = catchAsync(async (req, res) => {
 
 })
 
+const deleteCategory = catchAsync(async (req, res) => {
+
+    const { id } = req.params;
+
+    const result = await AdminService.deleteCategory(id);
+
+    sendResponse(res, {
+        statusCode: result?.code,
+        success: result?.success,
+        message: result?.message,
+       data: result?.data
+    })
+
+})
+const deleteFooter = catchAsync(async (req, res) => {
+
+    const { id } = req.params;
+
+    const result = await AdminService.deleteFooter(id);
+
+    sendResponse(res, {
+        statusCode: result?.code,
+        success: result?.success,
+        message: result?.message,
+       data: result?.data
+    })
+
+})
+
 
 export const AdminController = {
-    addCategory,editCategory,addFooter,editFooter,getCategories,getFooter
+    addCategory,editCategory,addFooter,editFooter,getCategories,getFooter,deleteCategory,deleteFooter
 }
