@@ -89,6 +89,8 @@ const updateProduct = async (pId,productDoc) => {
 const getProducts = async (req) => {
   try {
 
+    console.log(req.query)
+
     let whereCondition = {};
 
     if (req.query) {
@@ -124,6 +126,23 @@ const getProducts = async (req) => {
       if (req?.query?.subcategory) {
         whereCondition = { ...whereCondition, subcategory: req.query.subcategory };
       }
+      if (req?.query?.subcategory) {
+        whereCondition = { ...whereCondition, subcategory: req.query.subcategory };
+      }
+
+      if (req?.query?.minPrice) {
+        whereCondition = {
+          ...whereCondition, price: {
+          gt: parseFloat(req.query.minPrice)
+        } };
+      }
+      if (req?.query?.maxPrice) {
+        whereCondition = {
+          ...whereCondition, price: {
+          lt: parseFloat(req.query.maxPrice)
+        } };
+      }
+      
       
 
     }
